@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Brand;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 

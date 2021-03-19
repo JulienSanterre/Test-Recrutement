@@ -4,16 +4,17 @@ namespace App\Controller;
 
 use App\Entity\Brand;
 use App\Repository\BrandRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\ORM\EntityManagerInterface;
+
 
 class BrandController extends AbstractController
 {
     /**
-     * @Route("/brand/all", name="brandAll")
+     * @Route("/brands/all", name="brandAll")
      */
     // Recupere tous les brands
     public function all(Request $request, BrandRepository $brandRepository): Response
@@ -33,12 +34,12 @@ class BrandController extends AbstractController
             return $this->json(['Brands found', $arrayBrands], 200);
 
         }else{
-            return $this->json('Brands not found', 200);
+            return $this->json('Brands not found', 400);
         }
     }
 
     /**
-     * @Route("/brand/add", name="brandAdd")
+     * @Route("/brands/add", name="brandAdd")
      */
     //Ajoute un brands
     public function add(Request $request,EntityManagerInterface $em): Response
@@ -51,7 +52,7 @@ class BrandController extends AbstractController
     }
 
     /**
-     * @Route("/brand/delete/{id}", name="brandDelete")
+     * @Route("/brands/delete/{id}", name="brandDelete")
      */
     // Supprime un brand 
     // TODO : Suppression Cascade
@@ -68,7 +69,7 @@ class BrandController extends AbstractController
     }
 
     /**
-     * @Route("/brand/edit/{id}", name="brandEdit")
+     * @Route("/brands/edit/{id}", name="brandEdit")
      */
     // Edite un brands
     public function edit(Request $request,EntityManagerInterface $em, BrandRepository $brandRepository): Response

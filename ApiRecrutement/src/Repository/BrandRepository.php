@@ -19,32 +19,31 @@ class BrandRepository extends ServiceEntityRepository
         parent::__construct($registry, Brand::class);
     }
 
-    // /**
-    //  * @return Brand[] Returns an array of Brand objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+    /**
+    * @return Brand Returns an array of Brand objects
     */
+    // Recherche si un Brand existe
+    public function isFoundBrand(int $id)
+    {
+        $result = $this->createQueryBuilder('b')
+        ->where('b.id = :id')
+        ->setParameter('id', $id)
+        ->getQuery()
+        ->getResult();
 
-    /*
-    public function findOneBySomeField($value): ?Brand
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if(!isset($result[0])){
+            return NULL;
+        }else{
+            return $result[0];
+        }
     }
+
+    /**
+    * @return Brand[] Returns an array of Brand individual list all Brand
     */
+    public function findAllBrand()
+    {  
+        $result = $this->findAll();
+        return $result;
+    }
 }

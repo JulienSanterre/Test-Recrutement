@@ -18,7 +18,7 @@ class ProductsCategories
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=product::class)
+     * @ORM\ManyToOne(targetEntity=Product::class)
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     // php bin/console doctrine:schema:update --dump-sql
@@ -26,7 +26,7 @@ class ProductsCategories
     private $product;
 
     /**
-     * @ORM\ManyToOne(targetEntity=category::class)
+     * @ORM\ManyToOne(targetEntity=Category::class)
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     // php bin/console doctrine:schema:update --dump-sql

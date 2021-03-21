@@ -19,7 +19,7 @@ class Product
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=brand::class)
+     * @ORM\ManyToOne(targetEntity=Brand::class)
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false) 
      */
     // php bin/console doctrine:schema:update --dump-sql

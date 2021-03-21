@@ -20,7 +20,7 @@ class ProductController extends AbstractController
      * @Route("/products/all", name="productAll")
      */
     // Recupere tous les Products
-    public function all(Request $request, ProductRepository $productRepository): Response
+    public function all(Request $request, ProductRepository $productRepository, ProductsCategoriesRepository $productsCategoriesRepository): Response
     {
         // liste de tous les products 
         // TODO : Mise en place des parametres de tri (start, limit,search,order,sort)
@@ -28,9 +28,22 @@ class ProductController extends AbstractController
 
         $arrayProducts = [];
         foreach ($products as $individual) {
+
+            // Création de la variable pour récupérer les catégories
+            $categoriesList = [];
+
+            // Enregistrement des categories dans la variable
+            $productsCategories = $productsCategoriesRepository->getCategoriesFromProduct($individual);
+            foreach($productsCategories as $productCategory ){
+                $categoriesList [] = $productCategory->getCategories();
+            }
+
             $arrayProducts[] = [
-                $individual
+                $individual,$categoriesList
             ];
+
+            
+
         }
 
         return $this->json($arrayProducts, 200);
@@ -69,14 +82,15 @@ class ProductController extends AbstractController
                 $category = $categoryRepository->isFoundCategory($category_id);
                 $productsCategories->setCategories($category);
 
+                // Création de la variable pour récupérer les catégories
+                $categoriesList[] = $category;
+
                 $em->persist($productsCategories);
                 $em->flush();
             }
-        }  
+        }
 
-        // TODO : liste de toutes les categories
-
-        return $this->json(['Product create', $product],201 );
+        return $this->json(['Product create', $product, $categoriesList],201 );
     }
 
     /**
@@ -120,7 +134,8 @@ class ProductController extends AbstractController
             $categoriesRequest = json_decode($request->get('categories'), true);
             foreach ($categoriesRequest as $category_id) {
                 // Test pour déterminer si l'entrée existe
-                
+                // TODO : Supprimer les anciennes catégories
+
                 if($productsCategoriesRepository->isProductsCategories($product->getId(),$category_id) == NULL){
                     $productsCategories = new ProductsCategories;
                     $productsCategories->setProduct($product);
@@ -129,15 +144,16 @@ class ProductController extends AbstractController
                     $category = $categoryRepository->isFoundCategory($category_id);
                     $productsCategories->setCategories($category);
 
+                    // Création de la variable pour récupérer les catégories
+                    $categoriesList[] = $category;
+
                     $em->persist($productsCategories);
                     $em->flush();
                 }
             }
 
-            // TODO : liste de toutes les categories
-
             return $this->json(['Product edited',
-            $product
+            $product, $categoriesList
             ],200 );
         } else {
             return $this->json(['Product not found'],404 );
@@ -148,16 +164,24 @@ class ProductController extends AbstractController
      * @Route("/products/{id}", name="productOne")
      */
     // Recupere tous les Products
-    public function one(Request $request, ProductRepository $productRepository): Response
+    public function one(Request $request, ProductRepository $productRepository, ProductsCategoriesRepository $productsCategoriesRepository): Response
     {
         $product = $productRepository->isFoundProduct($request->get('id'));
 
+        // Création de la variable pour récupérer les catégories
+        $categoriesList = [];
+
         if(isset($product)){
 
-            // TODO : liste de toutes les categories
+            
+            // Enregistrement des categories dans la variable
+            $productsCategories = $productsCategoriesRepository->getCategoriesFromProduct($product);
+            foreach($productsCategories as $productCategory ){
+                $categoriesList [] = $productCategory->getCategories();
+            }
 
             return $this->json(['product found',
-            $product
+            $product, $categoriesList
             ],200 );
 
         } else {

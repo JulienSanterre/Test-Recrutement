@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Product;
 use App\Entity\ProductsCategories;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -37,6 +38,25 @@ class ProductsCategoriesRepository extends ServiceEntityRepository
             return NULL;
         }else{
             return $result[0];
+        }
+    }
+
+    /**
+    * @return Product[] Returns an array of Product objects
+    */
+    // Recherche si un ProductsCategories existe
+    public function getCategoriesFromProduct(Product $product)
+    {
+        $result = $this->createQueryBuilder('p')
+        ->where('p.product = :product')
+        ->setParameter('product', $product)
+        ->getQuery()
+        ->getResult();
+
+        if(!isset($result)){
+            return NULL;
+        }else{
+            return $result;
         }
     }
 }

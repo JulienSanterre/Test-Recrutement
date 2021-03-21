@@ -132,24 +132,28 @@ class ProductController extends AbstractController
             // Recuperation de la séléction de catégories sous forme d'un tableau classique
             $categoriesList = [];
             $categoriesRequest = json_decode($request->get('categories'), true);
+
+            // Supprimer les anciennes catégories
+            $oldCategories = $productsCategoriesRepository->getCategoriesFromProduct($product);
+            foreach($oldCategories as $oldCategory){
+                $em->remove($oldCategory);
+                $em->flush();
+            }
+
+            // Ajout des nouvelles catégories
             foreach ($categoriesRequest as $category_id) {
-                // Test pour déterminer si l'entrée existe
-                // TODO : Supprimer les anciennes catégories
+                $productsCategories = new ProductsCategories;
+                $productsCategories->setProduct($product);
 
-                if($productsCategoriesRepository->isProductsCategories($product->getId(),$category_id) == NULL){
-                    $productsCategories = new ProductsCategories;
-                    $productsCategories->setProduct($product);
+                //Récupération de l'objet category
+                $category = $categoryRepository->isFoundCategory($category_id);
+                $productsCategories->setCategories($category);
 
-                    //Récupération de l'objet category
-                    $category = $categoryRepository->isFoundCategory($category_id);
-                    $productsCategories->setCategories($category);
+                // Création de la variable pour récupérer les catégories
+                $categoriesList[] = $productsCategories->getCategories();
 
-                    // Création de la variable pour récupérer les catégories
-                    $categoriesList[] = $category;
-
-                    $em->persist($productsCategories);
-                    $em->flush();
-                }
+                $em->persist($productsCategories);
+                $em->flush();
             }
 
             return $this->json(['Product edited',

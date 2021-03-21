@@ -47,4 +47,20 @@ class ProductRepository extends ServiceEntityRepository
 
         return $result;
     }
+
+    /**
+    * @return Product[] Returns an array of Product individual from limited value
+    */
+    public function test(int $limit, string $search, string $order, string $sort)
+    {
+        $result = $this->createQueryBuilder('p')
+        ->where('p.name LIKE :search')
+        ->setParameter('search', '%'.$search.'%')
+        ->setMaxResults($limit)
+        ->add('orderBy', $order .' '. $sort)
+        ->getQuery()
+        ->getResult();
+
+        return $result;
+    }
 }

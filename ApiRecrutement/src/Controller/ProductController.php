@@ -23,9 +23,37 @@ class ProductController extends AbstractController
     public function all(Request $request, ProductRepository $productRepository, ProductsCategoriesRepository $productsCategoriesRepository): Response
     {
         // liste de tous les products 
-        // TODO : Mise en place des parametres de tri (start, limit,search,order,sort)
-        $products = $productRepository->findAllProducts();
+        $products = []; 
 
+        // Mise en place des différentes variables pour une séléction plus précises (start, limit,search,order,sort)
+        if($request->get('start') != NULL or $request->get('start') == 1){
+            $limit = 1;
+        }else if($request->get('limit') != NULL){
+            $limit = $request->get('limit');
+        }else{
+            $limit = 999;
+        }
+
+        if($request->get('search') == NULL){
+            $search = '';
+        }else{
+            $search = $request->get('search');
+        }
+
+        if(!$request->get('order')){
+            $order = 'p.name';
+        }else{
+            $order = 'p.'.$request->get('order');
+        }
+
+        if($request->get('sort') != 'DESC'){
+            $sort = 'ASC';
+        }else{
+            $sort = 'DESC';
+        }
+        
+        $products = $productRepository->test($limit, $search, $order, $sort);
+        
         $arrayProducts = [];
         foreach ($products as $individual) {
 
@@ -41,8 +69,6 @@ class ProductController extends AbstractController
             $arrayProducts[] = [
                 $individual,$categoriesList
             ];
-
-            
 
         }
 

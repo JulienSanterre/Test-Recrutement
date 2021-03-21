@@ -55,7 +55,6 @@ class BrandController extends AbstractController
      * @Route("/brands/delete/{id}", name="brandDelete")
      */
     // Supprime un brand 
-    // TODO : Suppression Cascade
     public function delete(Request $request,EntityManagerInterface $em, BrandRepository $brandRepository): Response
     {
         $brand = $brandRepository->isFoundBrand($request->get('id'));

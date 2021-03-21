@@ -19,14 +19,18 @@ class ProductsCategories
 
     /**
      * @ORM\ManyToOne(targetEntity=product::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
+    // php bin/console doctrine:schema:update --dump-sql
+    // php bin/console doctrine:schema:update --force
     private $product;
 
     /**
      * @ORM\ManyToOne(targetEntity=category::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
+    // php bin/console doctrine:schema:update --dump-sql
+    // php bin/console doctrine:schema:update --force
     private $categories;
 
     public function getId(): ?int

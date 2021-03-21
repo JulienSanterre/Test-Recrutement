@@ -20,7 +20,11 @@ class Product
 
     /**
      * @ORM\ManyToOne(targetEntity=brand::class)
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false) 
      */
+    // php bin/console doctrine:schema:update --dump-sql
+    // php bin/console doctrine:schema:update --force
+    // Attention Supprimera TOUS les produits de cd brand également 
     private $brand;
 
     /**

@@ -69,7 +69,6 @@ class CategoryController extends AbstractController
      * @Route("/categories/delete/{id}", name="categoryDelete")
      */
     // Supprime un category
-    // TODO : Suppression Cascade
     public function delete(Request $request,EntityManagerInterface $em, CategoryRepository $categoryRepository): Response
     {
         $category = $categoryRepository->isFoundCategory($request->get('id'));

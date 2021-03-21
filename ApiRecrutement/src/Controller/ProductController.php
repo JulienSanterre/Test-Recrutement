@@ -31,7 +31,8 @@ class ProductController extends AbstractController
         }else if($request->get('limit') != NULL){
             $limit = $request->get('limit');
         }else{
-            $limit = 999;
+            // Limite au maximum d'entrées
+            $limit = $productRepository->howManyProducts();
         }
 
         if($request->get('search') == NULL){

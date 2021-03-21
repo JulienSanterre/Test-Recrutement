@@ -68,12 +68,14 @@ class ProductController extends AbstractController
             }
 
             $arrayProducts[] = [
-                $individual,$categoriesList
+                'Products' => $individual,
+                'Md5' => md5($individual->getId()),
+                'Categories' => $categoriesList
             ];
 
         }
 
-        return $this->json($arrayProducts, 200);
+        return $this->json(['Products found', $arrayProducts], 200);
     }
 
     /**
@@ -117,7 +119,7 @@ class ProductController extends AbstractController
             }
         }
 
-        return $this->json(['Product create', $product, $categoriesList],201 );
+        return $this->json(['Product create', "Product" => $product,'Md5' => md5($product->getId()), "categories" => $categoriesList],201 );
     }
 
     /**
@@ -183,9 +185,7 @@ class ProductController extends AbstractController
                 $em->flush();
             }
 
-            return $this->json(['Product edited',
-            $product, $categoriesList
-            ],200 );
+            return $this->json(['Product update','Product' => $product, 'Md5' => md5($product->getId()),'Categories' => $categoriesList],200 );
         } else {
             return $this->json(['Product not found'],404 );
         }
@@ -211,12 +211,10 @@ class ProductController extends AbstractController
                 $categoriesList [] = $productCategory->getCategories();
             }
 
-            return $this->json(['product found',
-            $product, $categoriesList
-            ],200 );
+            return $this->json(['Product found','Product' => $product, 'Md5' => md5($product->getId()),'Categories' => $categoriesList],200 );
 
         } else {
-            return $this->json(['product not found'],404 );
+            return $this->json(['Product not found'],404 );
         }
     }
 

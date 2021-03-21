@@ -119,7 +119,7 @@ class ProductController extends AbstractController
             }
         }
 
-        return $this->json(['Product create', "Product" => $product,'Md5' => md5($product->getId()), "categories" => $categoriesList],201 );
+        return $this->json(['Product create', "Product" => $product,'Md5' => md5($product->getId()), "Categories" => $categoriesList],201 );
     }
 
     /**
